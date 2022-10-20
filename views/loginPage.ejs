@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>guaTalk main</title>
+		<link rel="styleSheet" href="../static/css/guaTalk.css" />
+		<script
+			src="https://code.jquery.com/jquery-3.6.1.min.js"
+			integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
+			crossorigin="anonymous"
+		></script>
+		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+		<script src="../static/js/mainScreenMove.js" defer></script>
+	</head>
+
+	<body>
+		<div class="mainScreenContainer">
+			<div class="guaTalk_body">
+				<div class="item_wrapper">
+					<div class="item_logo">
+						<img class="logo" src="../static/imgs/gua.jpg" />
+					</div>
+
+					<form class="item_inputs">
+						<div class="id-pw-wrapper">
+							<input
+								class="input_id"
+								name="input_id"
+								type="text"
+								placeholder="과톡계정"
+								autocomplete="username"
+							/>
+							<input
+								class="input_pw"
+								name="input_pw"
+								type="password"
+								placeholder="비밀번호"
+								autocomplete="current-password"
+							/>
+						</div>
+						<button class="login_button" type="button">로그인</button>
+						<div class="autoLogin_wrapper">
+							<input id="checkbox" type="checkbox" name="autoLogin" />
+							<label for="autoLogin">실행시 자동 로그인</label>
+						</div>
+					</form>
+					<form id="form_info" action="/chat" method="POST">
+						<input type="hidden" name="id" />
+					</form>
+					<div class="item_footer">
+						<div>회원가입</div>
+						<!-- <div>과톡계정 찾기</div>
+						<div>|</div>
+						<div>비밀번호 재설정</div> -->
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+			function get() {
+				let form = document.querySelector(".item_inputs");
+				let _data = {
+					id: form.input_id.value,
+					pw: form.input_pw.value,
+				};
+
+				axios({
+					url: "/login",
+					method: "post",
+					data: _data,
+				})
+					.then((response) => {
+						console.log(response.data);
+						if (response.data) {
+							var form_info = document.getElementById("form_info");
+							form_info.id.value = form.input_id.value;
+							form_info.submit();
+						} else {
+							form.reset();
+						}
+					})
+					.catch((err) => console.log(err));
+			}
+
+			$(".input_id").on("keydown", (key) => {
+				if (key.keyCode == 13) {
+					$(".input_pw").focus();
+				}
+			});
+
+			$(".input_pw").on("keydown", (key) => {
+				if (key.keyCode == 13) {
+					$(".login_button").focus();
+					$(".login_button").on("click", get);
+				}
+			});
+
+			function signIn() {
+				axios({
+					url: "/signup",
+					method: "get",
+				})
+					.then((response) => {
+						window.location = "http://localhost:8000/signup";
+					})
+					.catch((err) => console.log(err));
+			}
+
+			$(".item_footer").on("click", signIn);
+		</script>
+	</body>
+</html>

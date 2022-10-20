@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<script
+			src="https://cdn.socket.io/4.5.0/socket.io.min.js"
+			integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k"
+			crossorigin="anonymous"
+		></script>
+		<script
+			src="https://code.jquery.com/jquery-3.6.1.min.js"
+			integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
+			crossorigin="anonymous"
+		></script>
+		<script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+		<link rel="stylesheet" href="../static/css/index.css" />
+		<script src="../static/js/timeStamp.js" defer></script>
+		<title>GUAMEGI-Talk</title>
+	</head>
+	<body>
+		<div class="chat_container">
+			<div class="top-nav-wrapper">
+				<nav class="topNav">
+					<div class="menu-btns-wrapper">
+						<div class="btns">
+							<img class="sort-icon rotate close" src="/static/imgs/plus.png" />
+							<img class="sort-icon" src="/static/imgs/minus.png" />
+							<img class="sort-icon rotate" src="/static/imgs/sort.png" />
+						</div>
+						<div class="slide-bar-wrapper">
+							<input
+								class="slide-bar"
+								type="range"
+								min="40"
+								max="100"
+								value="100"
+								oninput="changeOpacity()"
+							/>
+						</div>
+					</div>
+				</nav>
+			</div>
+			<div class="msg-view">
+				<div class="chat-list"></div>
+			</div>
+			<form class="id-msg-wrapper" onsubmit="return false;">
+				<div class="msg-text-area">
+					<select id="id-select"></select>
+					<textarea
+						type="text"
+						name="msg"
+						id="msg"
+						onkeyup="enterMsg()"
+						autofocus
+					></textarea>
+					<button class="sendMsgBtn" type="button" onclick="sendMsg();">
+						전 송
+					</button>
+				</div>
+			</form>
+		</div>
+
+		<script>
+			// 슬라이드 바
+			function changeOpacity() {
+				$(".chat_container").css("opacity", $(".slide-bar").val() / 100);
+			}
+			const socket = io.connect();
+			const nick = "<%=data.nick%>";
+			// close 버튼으로 퇴장
+			$(".close").attr("onClick", 'document.location="/"');
+
+			$("#id-select").attr("disabled", false);
+			$("#id-select").append(`<option value='${nick}'></option>`);
+			$("#msg").attr("disabled", false);
+
+			socket.emit("sendUserId", nick);
+
+			// 엔터로 메시지 전송
+			function enterMsg() {
+				if (window.event.keyCode === 13) sendMsg();
+			}
+
+			// 매시지 전송
+			function sendMsg(e) {
+				console.log($("#msg").val());
+				if (!$("#msg").val() || $("#msg").val() === "\ n") {
+					$("#msg").val("");
+					return;
+				}
+				socket.emit("sendMsg", {
+					to: $("#id-select").val(),
+					msg: $("#msg").val(),
+				});
+			}
+
+			socket.on("userChange", (client_list) => {
+				let option_list = "";
+				for (let key in client_list) {
+					if (key === socket.id) continue;
+					option_list += `<option value=${key}>${client_list[key]}</option>`;
+				}
+				$("#id-select").html(option_list);
+			});
+
+			socket.on("send", (msg) => {
+				let myMsg = $("#msg").val();
+				let className = "";
+				if (myMsg == msg) {
+					className = "my-chat";
+					$(".chat-list").append(`
+								<div class="${className}">
+									<span class='current_time'>${timeStamp()}</span>
+									<div>${msg}</div>
+								</div>`);
+				} else {
+					className = "other-chat";
+					$(".chat-list").append(`
+								<div class="${className}">
+									<div>${msg}</div>
+									<span class='other_current_time'>${timeStamp()}</span>
+								</div>`);
+				}
+				$("#msg").val("");
+				$(".msg-view").scrollTop($(".msg-view").height());
+			});
+
+			socket.on("notice", (id) => {
+				$(".chat-list").append(`<p>${id}</p>`);
+				$(".chat-list").addClass("notice");
+			});
+		</script>
+	</body>
+</html>

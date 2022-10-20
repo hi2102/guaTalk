@@ -1,0 +1,80 @@
+<html>
+	<head>
+		<title>회원가입</title>
+		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+		<script
+			src="https://code.jquery.com/jquery-3.6.0.min.js"
+			integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+			crossorigin="anonymous"
+		></script>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Heebo:wght@100;200;300&amp;display=swap"
+		/>
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+		<link rel="stylesheet" href="/static/css/signUp.css" />
+	</head>
+	<body>
+		<div class="signUp">
+			<form class="user_info_field">
+				<div>
+					<label for="userid">User ID</label>:
+					<input type="text" name="userid" id="userid" autocomplete="userid" />
+				</div>
+
+				<div>
+					<label for="userpw">password</label>:
+					<input
+						type="password"
+						name="userpw"
+						id="userpw"
+						autocomplete="current-password"
+					/>
+				</div>
+
+				<div>
+					<label for="nickname">nickname</label>:
+					<input
+						type="text"
+						name="nickname"
+						id="nickname"
+						autocomplete="username"
+					/>
+				</div>
+				<div class="button_wrapper">
+					<button class="signup_button" type="button">회원 가입</button>
+					<button type="reset">reset</button>
+				</div>
+			</form>
+		</div>
+		<script>
+			$(".signup_button").click(sendUserInfo);
+
+			function sendUserInfo() {
+				const form = document.querySelector(".user_info_field");
+
+				const _data = {
+					id: form.userid.value,
+					pw: form.userpw.value,
+					nickname: form.nickname.value,
+				};
+
+				axios({
+					url: "/signupdata",
+					method: "post",
+					data: _data,
+				})
+					.then((result) => {
+						console.log(result.data);
+					})
+					.catch((err) => {
+						console.log(err);
+					});
+			}
+		</script>
+	</body>
+</html>

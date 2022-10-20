@@ -1,0 +1,10 @@
+{
+	"mysql": {
+		"host": "localhost",
+		"database": "chatting",
+		"username": "user",
+		"password": "sqlQlqjs!1",
+		"dialect": "mysql",
+		"port": "3306"
+	}
+}
