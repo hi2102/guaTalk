@@ -1,2 +1,41 @@
-# guaTalk
-GUATALK - 과메기톡 :: 과톡
+# 과메기를 좋아하는 사람들을 위한 채팅 서비스 :: GUATALK - 과톡 #수정중
+
+### Front - end
+
+- UI
+    
+  ∙ 로그인 화면 UI를 사용자가 원하는 위치로 이동 가능하도록 설계
+  
+    
+  ∙ 오른쪽 상단 슬라이드바로 App의 opacity 변경 가능
+    
+
+
+
+- functions
+    
+  ∙ 입장시 회원(db에 저장된 데이터)의 닉네임으로 입장 여부 확인 가능
+    
+  ∙ 전체 메시지 / DM 기능
+    
+  ∙ 왼쪽 상단의 x 버튼을 누르면 채팅 종료 
+    
+  → 채팅 종료시 방에 남은 인원은 회원 확인 가능하며 [socket.io](http://socket.io) 삭제
+    
+
+
+- 시연 화면
+    
+<img width='100%' src='https://user-images.githubusercontent.com/71423455/199930789-18a416c6-a722-49f8-9f9f-d9601b8e55a8.gif' >
+
+
+
+# 과메기톡 → Back - end
+
+- db - MySQL
+    
+    ∙ 테이블 생성 ( 회원 가입 / 회원 정보 저장 )
+    
+- Node.js → sequelize 로 db 연결
+    
+    ∙ 회원 가입 된 정보만 로그인 가능
