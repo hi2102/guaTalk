@@ -9,6 +9,10 @@
 
 <img width="100%" alt="action" src="https://user-images.githubusercontent.com/71423455/200486578-320875f0-a28d-46e8-81fe-b27d8eb17a16.gif">
 
+1️⃣ 코드
+    
+> <img width="49.4%"  alt="addEvent" src="https://user-images.githubusercontent.com/71423455/200482659-866a3942-8483-4bbd-9939-17b9dd9956d5.png"> <img width="49.4%" alt="moveEvent" src="https://user-images.githubusercontent.com/71423455/200482653-e4fc04a4-55bb-40ae-af53-770a63716746.png">
+
   ∙ 오른쪽 상단 슬라이드바로 App의 opacity 변경 가능
 
 - functions
@@ -19,9 +23,6 @@
     
   → 채팅 종료시 방에 남은 인원은 회원 확인 가능하며 [socket.io](http://socket.io) 삭제
 
-1️⃣ 코드
-    
-> <img width="49.4%"  alt="addEvent" src="https://user-images.githubusercontent.com/71423455/200482659-866a3942-8483-4bbd-9939-17b9dd9956d5.png"> <img width="49.4%" alt="moveEvent" src="https://user-images.githubusercontent.com/71423455/200482653-e4fc04a4-55bb-40ae-af53-770a63716746.png">
 
 
 # 과메기톡 → Back - end
